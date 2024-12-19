@@ -5,6 +5,7 @@ import register from '@/views/register.vue';
 import playlist from '@/views/playlist.vue';
 import shop from '@/view/shop.vue';
 import tickets from '@/views/tickets.vue';
+import account from '@/views/account.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,7 +38,12 @@ const router = createRouter({
     {
       path:'/shop',
       name:'shop',
-      component:shop
+      component: shop
+    },
+    {
+      path:'/account',
+      name:'account',
+      component: account
     }
   ],
 })
