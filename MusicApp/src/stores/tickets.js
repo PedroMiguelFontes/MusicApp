@@ -8,6 +8,13 @@ export const ticketsStore = defineStore('tickets', {
     },
     buyPremium() {
         this.tickets.premium--
+    },
+    getTickets(type,number) {
+        if (type=='normal') {
+            this.tickets.normal+={number}
+        } else if (type=='premium') {
+            this.tickets.premium+={number}
+        }
     }
   }
 })
