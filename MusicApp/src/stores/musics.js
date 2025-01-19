@@ -1,32 +1,38 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { fetchTopTracks } from '@/api/lastfm';
+
 
 export const musicStore = defineStore('music', {
-  state: () => ({musics:[{name:'TestMusic',author:'TestAuthor',releaseyear:1998}]}),
+  state: () => ({musics:[{name:'TestMusic',author:'TestAuthor',releaseyear:1998}],loading:false,}),
   actions: {
-    addMusic(name,author,releaseyear) {
-      if (name==''||author==''||releaseyear=='') {
-        console.log('Information required')
-      } else {
-        this.music.push(name,author,releaseyear)
-      }
-    },
-    removeMusic(name) {
-      try {
-        let search=musics.find(music=>music.name=name)
-        if (name=='') {
-          console.log('Please input a name')
-        } else if (search==-1) {
-          console.log('No music found')
-        } else {
-          this.musics.pop(search)
-          console.log('Music deleted sucessfully')
+        async fetchMusicFromApi(artistName) {
+        this.loading = true;
+        this.error = null;
+  
+        try {
+          const tracks = await fetchTopTracks(artistName);
+          this.musicList = tracks.map(track => ({
+            name: track.name,
+            artist: track.artist.name,
+            listeners: track.listeners, 
+          }));
+        } catch (error) {
+          this.error = 'Erro ao buscar músicas do artista.';
+        } finally {
+          this.loading = false;
         }
-      } catch(error) {
-        console.log('An error has ocurred')
+      },
+  
+      addLocalMusic(music) {
+        this.musicList.push(music); 
+      },
+
+      removeMusic(index) {
+        if (index >= 0 && index < this.musicList.length) {
+          this.musicList.splice(index, 1);
+        }
       }
-      
-    }
   }
 })
 
