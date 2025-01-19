@@ -7,11 +7,11 @@ export const userStore = defineStore('user', {
                   {loggedUser:[{username:'',pass:'',role:''}]}
     ),
     actions: {
-      login() {
+      login(username, pass) {
         try {
-          let search=user.find((user)=>user.name==user.username)
-          if (search!=-1) {
-            router.go('/home')
+          let user = this.users.find(user => user.username === username && user.pass === pass);
+          if (user) {
+            router.push('/home')
             this.loggedUser.push({username:user.username,pass:user.pass,role:user.role})
           } 
           else {
@@ -20,7 +20,7 @@ export const userStore = defineStore('user', {
         } catch(error) {
           console.error('An error has ocurred')
         }},
-      register() {
+      register(username,pass) {
         this.users.push({username,pass,role:'admin'})
       }
     }

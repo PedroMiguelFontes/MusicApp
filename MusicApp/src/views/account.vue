@@ -1,7 +1,7 @@
 <template>
     <div>
         <img src="" alt="account image">
-        <button>Change info</button>
+        <button @clikc="''">Change info</button>
     </div>
 </template>
 

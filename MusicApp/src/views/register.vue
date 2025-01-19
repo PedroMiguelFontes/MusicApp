@@ -12,10 +12,23 @@
 </template>
 
 <script>
+    import { userStore } from '@/stores/users';
 
     export default {
-        
+    data() {
+        return {
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        register() {
+            const store = userStore();
+            store.register(this.username, this.password);
+            this.$router.push('/login');
+        }
     }
+}
 </script>
 
 <style lang="scss" scoped>
