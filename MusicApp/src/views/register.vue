@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Create an account</h1>
-        <form v-on:submit="">
+        <form v-on:submit="register">
             <label for="userName">Username:</label>
             <input type="text" id="userName"><br>
             <label for="password">Password:</label>

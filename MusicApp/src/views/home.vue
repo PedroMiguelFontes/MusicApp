@@ -3,8 +3,8 @@
         <h1>Welcome to MusicApp, {{ userStore.loggedUser.name }}!</h1>
         <ul>
             <li>Store</li>
-            <li></li>
-            <li></li>
+            <li>MusicList</li>
+            <li>Tickets</li>
             <li></li>
         </ul>
     </div>

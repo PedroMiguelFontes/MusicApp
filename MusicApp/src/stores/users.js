@@ -21,7 +21,7 @@ export const userStore = defineStore('user', {
           console.error('An error has ocurred')
         }},
       register(username,pass) {
-        this.users.push({username,pass,role:'admin'})
+        this.users.push({username,pass,role:'user'})
       }
     }
   })

@@ -1,68 +1,69 @@
 <template>
-    <div>
-        <input v-model="artistName" placeholder="Digite o nome do artista" />
-        <button @click="searchMusic">Buscar Músicas</button>
-        <div v-if="loading">Carregando músicas...</div>
-        <div v-else-if="error">{{ error }}</div>
-        <ul v-else>
-            <li v-for="(music, index) in musicList" :key="index">
-                {{ music.name }} - {{ music.artist }} ({{ music.listeners }} ouvintes)
-            </li>
-        </ul>
-        <div v-if="userStore.loggedUser.role=='Admin'">
-            <h2>Adicionar Música</h2>
-            <form @submit.prevent="addMusic">
-                <input v-model="newMusic.name" placeholder="Nome da Música" required />
-                <input v-model="newMusic.artist" placeholder="Artista" required />
-                <button type="submit">Adicionar</button>
-            </form>
-        </div>
+  <div>
+    <input v-model="artistName" placeholder="Digite o nome do artista" />
+    <button @click="searchMusic">Buscar Músicas</button>
+    <div v-if="loading">Carregando músicas...</div>
+    <div v-else-if="error">{{ error }}</div>
+    <ul v-else>
+      <li v-for="(music, index) in musicList" :key="index">
+        {{ music.name }} - {{ music.artist }} ({{ music.listeners }} ouvintes)
+      </li>
+    </ul>
+    <div v-if="isAdmin">
+      <h2>Adicionar Música</h2>
+      <form @submit.prevent="addMusic">
+        <input v-model="newMusic.name" placeholder="Nome da Música" required />
+        <input v-model="newMusic.artist" placeholder="Artista" required />
+        <button type="submit">Adicionar</button>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
-    import { musicStore } from '@/stores/musics';
-    import { userStore } from '@/stores/users';
-    export default {
-        setup() {
-            const musicStore = musicStore(); 
-            const artistName = '';
-            const newMusic = { name: '', artist: '' };
+import { musicStore } from '@/stores/musics'
+import { userStore } from '@/stores/users'
 
-            const searchMusic = async () => {
-            if (artistName.trim()) {
-                await musicStore.fetchMusicFromApi(artistName);
-            }
-        };
-
-            const addMusic = () => {
-                if (newMusic.name.trim() && newMusic.artist.trim()) {
-                    musicStore.addLocalMusic({ ...newMusic, listeners: 0 }); 
-                    newMusic.name = '';
-                    newMusic.artist = '';
-                }
-            };
-
-            const removeMusic = (index) => {
-                musicStore.removeMusic(index);
-            };
-
-        },
-        data() {
-            return {
-                store: musicStore,userStore,
-                artistName,
-                newMusic,
-                searchMusic,
-                addMusic,
-                removeMusic,
-                musicList: musicStore.musicList, 
-                loading: musicStore.loading, 
-                error: musicStore.error, 
-            }
-        },
-        
+export default {
+  data() {
+    return {
+      artistName: '',
+      newMusic: {
+        name: '',
+        artist: ''
+      }
     }
+  },
+  computed: {
+    musicList() {
+      const store = musicStore()
+      return store.musicList
+    },
+    loading() {
+      const store = musicStore()
+      return store.loading
+    },
+    error() {
+      const store = musicStore()
+      return store.error
+    },
+    isAdmin() {
+      const store = userStore()
+      return store.loggedUser && store.loggedUser.role === 'admin'
+    }
+  },
+  methods: {
+    async searchMusic() {
+      const store = musicStore()
+      await store.fetchMusicFromApi(this.artistName)
+    },
+    addMusic() {
+      const store = musicStore()
+      store.addLocalMusic(this.newMusic)
+      this.newMusic = { name: '', artist: '' } // Reset the form
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
