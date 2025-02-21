@@ -18,7 +18,7 @@ export async function fetchTopTracks(artistName) {
     if (response.data && response.data.toptracks) {
       return response.data.toptracks.track; // Retorna a lista de músicas
     } else {
-      throw new Error('Nenhuma música encontrada para este artista.');
+      throw new Error('No tracks found');
     }
   } catch (error) {
     console.error('Erro ao buscar músicas:', error);

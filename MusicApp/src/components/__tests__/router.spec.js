@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router/index'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import Home from '@/views/home.vue'
-import Login from '@/views/login.vue'
+import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
 
 describe('Router', () => {
   let router
